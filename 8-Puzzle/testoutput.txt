@@ -1,0 +1,43 @@
+# This is the HW4 testcmd file.
+# ----------------------------------
+# Test 1 - DFS repeated state checking verification
+setState 1 2 3 4 5 6 7 8 0 # DFS will consider moving left first, then left again, and the when it hits a wall it should consider moving right - which it will not do due to repeated state checking
+solve DFS 3 # By setting the node limit to 3, we know we will hit this limit as the solution is many more steps
+Error: maxnodes limit (3) reached
+printState # by the time we reach here, we have made 3 moves. Left, left, and NOT right. We should have instead moved up as [right] was invalid due to state checking
+1 2 3
+  5 6
+4 7 8
+# Test 1 Complete
+# ----------------------------------
+# Test 2 - Verify branching factor approximation works with BFS
+# BFS for the state 1 4 2 3 0 5 6 7 8 can be manually computed out to have a branching factor of roughly 2.54 (1 + 2.54 + 2.54^2 = 10 = number of nodes generated and a branch depth of 2)
+branchingFactorBFS 1 4 2 3 0 5 6 7 8 # this should give us a branching factor of 2.54
+branchingFactor = 2.53
+
+# Test 2 Complete
+# ----------------------------------
+# Test 3 - Verify branching factor approximation works with DFS
+# DFS for the state 1 2 5 0 3 4 6 7 8 can be manually computed out to have a branching factor of exactly 1, as its path is right, right, up, left, left --> 
+# it has 5 nodes generated, and solution depth of 5 so (1 + 1^1 + 1^2 + 1^3 + 1^4 = 5)
+branchingFactorDFS 1 2 5 0 3 4 6 7 8 # this should give us a branching factor of nearly 1
+branchingFactor = 0.93
+
+# Test 3 Complete
+# ----------------------------------
+# Test 4 - Verify branching factor approximation works with A* under h1 heuristic
+# A* under h1 for the state 3 1 2 4 5 6 0 7 8 can be manually computed out to have a branching factor something between 1 and 1.5 as 
+# the solution is of depth 4 and (1 + 1^1 + 1^2 + 1^3 + 1^4) = 5 < Nodes generated < (1 + 1.5^1 + 1.5^2 + 1.5^3 + 1.5^4) = 13.1875
+branchingFactorAStarH1 3 1 2 4 5 6 0 7 8 # this should give us a branching between 1-1.5
+branchingFactor = 1.33
+
+# Test 4 Complete
+# ----------------------------------
+# Test 5 - Verify branching factor approximation works with A* under h2 heuristic
+# A* under h2 for the state 3 1 2 4 5 6 0 7 8 can be manually computed out to have a branching factor between 1 and 1.35 as 
+# the solution is of depth 4 and (1 + 1^1 + 1^2 + 1^3 + 1^4) = 5 < Nodes generated < (1 + 1.35^1 + 1.35^2 + 1.35^3 + 1.35^4) = 9.95438125
+branchingFactorAStarH2 3 1 2 4 5 6 0 7 8 # this should give us a branching factor between 1-1.35
+branchingFactor = 1.22
+
+# Test 5 Complete
+# ----------------------------------
